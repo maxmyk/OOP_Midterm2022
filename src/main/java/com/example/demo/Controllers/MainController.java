@@ -7,19 +7,22 @@ import com.example.demo.Parsers.PDLReader;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/result", method= RequestMethod.POST)
+@RequestMapping(path="/result", method=RequestMethod.POST)
 public class MainController {
     @GetMapping
     public static String getPayments(@RequestParam("domain") String url) {
-//        String url = "jetbrains.com";
-//        String url = "ucu.edu.ua";
-//        String url = "intel.com";
-//        @RequestParam("domain") String username
+        url = url.toLowerCase();
+        url = url.replaceAll("http://", "");
+        url = url.replaceAll("https://", "");
+        url = url.replaceAll("www.", "");
         CompanyInfo info = new CompanyInfo();
         LogoGetter.logoGetter("https://"+url, info);
-//        return info.toString();
         PDLReader.PDLGetter(url, info);
         BrandReader.BrandFetchGetter(url, info);
-        return info.toString();
+        String ans = "<h1>That's exactly what You were looking for =)</h1><br><h3>" + info.toString().replaceAll("\",\"",
+                "\"<br>\"") + "</h2><form>\n" +
+                " <input type=\"button\" value=\"Go back!\" onclick=\"history.back()\">\n" +
+                "</form>";
+        return ans;
     }
 }

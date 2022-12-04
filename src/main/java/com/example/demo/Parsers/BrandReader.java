@@ -31,14 +31,22 @@ public class BrandReader {
         System.out.println(jsonObject);
         try {
             JSONArray f_url = jsonObject.getJSONArray("links");
-//            Iterator<JSONObject> keys = f_url.iterator();
-//            while(keys.hasNext()) {
-//                JSONObject elem = keys.next();
-//                if (elem.get("name") == "twitter" && !Objects.equals(info.getTwitter(), "")) {
-//                    info.setTwitter(elem.get("url"));
-//                }
-//            }
-//            f_url.get(0);
+            for (int i = 0; i < f_url.length(); i++) {
+                System.out.println(f_url.getJSONObject(i).get("name"));
+                String obj_name = f_url.getJSONObject(i).get("name").toString();
+                if(Objects.equals(obj_name, "twitter") && Objects.equals(info.getTwitter(), "")){
+                    info.setTwitter(f_url.getJSONObject(i).get("url").toString());
+                }
+                if(Objects.equals(obj_name, "facebook") && Objects.equals(info.getFacebook(), "")){
+                    info.setFacebook(f_url.getJSONObject(i).get("url").toString());
+                }
+            }
+        }
+        catch (JSONException e){
+            System.out.println("BFG twitter/facebook error occured!");
+        }
+        try {
+            JSONArray f_url = jsonObject.getJSONArray("links");
             for (int i = 0; i < f_url.length(); i++) {
                 System.out.println(f_url.getJSONObject(i).get("name"));
                 String obj_name = f_url.getJSONObject(i).get("name").toString();

@@ -1,6 +1,8 @@
 package com.example.demo.Parsers;
 
 import lombok.Data;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -17,15 +19,35 @@ public class CompanyInfo {
 
     @Override
     public String toString() {
-        return "CompanyInfo{" +
-                "name='" + name + '\'' +
-                ", twitter='" + twitter + '\'' +
-                ", facebook='" + facebook + '\'' +
-                ", logos=" + logos +
-                ", icons=" + icons +
-                ", employees=" + employees +
-                ", address='" + address + '\'' +
-                '}';
+//        return "CompanyInfo{" +
+//                "name='" + name + '\'' +
+//                ", twitter='" + twitter + '\'' +
+//                ", facebook='" + facebook + '\'' +
+//                ", logos=" + logos +
+//                ", icons=" + icons +
+//                ", employees=" + employees +
+//                ", address='" + address + '\'' +
+//                '}';
+        return toJson().toString();
+    }
+
+    public JSONObject toJson(){
+        JSONArray icons = new JSONArray();
+        for (String elem:getIcons()) {
+            icons.put(elem);
+        }
+        JSONArray logos = new JSONArray();
+        for (String elem:getLogos()) {
+            logos.put(elem);
+        }
+        return new JSONObject()
+                .put("name", getName())
+                .put("twitter", getTwitter())
+                .put("facebook", getFacebook())
+                .put("logo", logos)
+                .put("icon", icons)
+                .put("employees", getEmployees())
+                .put("address", getAddress());
     }
 
     public ArrayList<String> getLogos() {
