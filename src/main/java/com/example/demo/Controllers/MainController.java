@@ -19,10 +19,10 @@ public class MainController {
         LogoGetter.logoGetter("https://"+url, info);
         PDLReader.PDLGetter(url, info);
         BrandReader.BrandFetchGetter(url, info);
-        String ans = "<h1>That's exactly what You were looking for =)</h1><br><h3>" + info.toString().replaceAll("\",\"",
-                "\"<br>\"") + "</h2><form>\n" +
+        return "<h1>That's exactly what You were looking for =)</h1><br><h3>" + info.toString().replaceAll("\",\"",
+                "\"<br>\"").replaceAll("],\"",
+                "]<br>\"") + "</h2><form>\n" +
                 " <input type=\"button\" value=\"Go back!\" onclick=\"history.back()\">\n" +
                 "</form>";
-        return ans;
     }
 }

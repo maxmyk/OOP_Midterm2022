@@ -1,19 +1,12 @@
 package com.example.demo.Parsers;
 
 import lombok.SneakyThrows;
-import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class BrandReader {
     @SneakyThrows
@@ -60,6 +53,24 @@ public class BrandReader {
         }
         catch (JSONException e){
             System.out.println("BFG twitter/facebook error occured!");
+        }
+        try {
+            String aa = jsonObject.getJSONArray("logos").getJSONObject(0).getJSONArray("formats").getJSONObject(0).get("src").toString();
+            if(!Objects.equals(aa, "") && info.getLogos().size() == 0){
+                info.setLogos(new ArrayList<>(Collections.singletonList(aa)));
+            }
+        }
+        catch (JSONException|IndexOutOfBoundsException e){
+            System.out.println("BFG no logos found!");
+        }
+        try {
+            String aa = jsonObject.getJSONArray("images").getJSONObject(0).getJSONArray("formats").getJSONObject(0).get("src").toString();
+            if(!Objects.equals(aa, "") && info.getIcons().size() == 0){
+                info.setIcons(new ArrayList<>(Collections.singletonList(aa)));
+            }
+        }
+        catch (JSONException|IndexOutOfBoundsException e){
+            System.out.println("BFG no images found!");
         }
     }
 
