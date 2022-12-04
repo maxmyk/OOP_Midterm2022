@@ -8,8 +8,6 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 public class LogoGetter {
-
-
     static void getLogoElementFromLinkTag(Document doc, ArrayList<String> logos, ArrayList<String> icons) {
         // Finds logos in link tags in the document, and provides them to CompanyInfo lists
         Elements result = doc.head().select("link[rel]");
@@ -39,14 +37,27 @@ public class LogoGetter {
         }
     }
 
+    static void fixRelative(ArrayList<String> logos, ArrayList<String> icons, String url){
+        for(String logo : logos){
+            if(logo.startsWith("/")){
+                logo = url.concat(logo);
+            }
+        }
+        for(String icon : icons){
+            if(icon.startsWith("/")){
+                icon = url.concat(icon);
+            }
+        }
+
     public static CompanyInfo parse(String url, CompanyInfo info){
         try {
             final Document document = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0")
                     .timeout(30000)
                     .get();
-            getLogoElementFromLinkTag(document, info.getLogos(), info.getIcons());
-            getLogoElementFromImgTag(document, info.getLogos(), info.getIcons());
+            getLogoElementFromLinkTag(document, info.getLogos(), info.getIcons(), url);
+            getLogoElementFromImgTag(document, info.getLogos(), info.getIcons(), url);
+            fixRelative(info.getLogos(), info.getIcons(), url);
 
         }catch (Exception e){
             System.out.println("Unable to retrieve data from URL: " + url);
