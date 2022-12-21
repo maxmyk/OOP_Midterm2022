@@ -1,5 +1,5 @@
 # OOP_Midterm2022
-Authors: Mykytenko Dmytro, Mykhasiuta Maksym, Zhurba Fedir, Andreev Kyryl
+Authors: Mykytenko Dmytro, Mykhasiuta Maksym, Zhurba Fedir
 
 Done:
   - Class Diagram
