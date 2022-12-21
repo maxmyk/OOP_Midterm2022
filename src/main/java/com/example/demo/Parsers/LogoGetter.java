@@ -37,17 +37,18 @@ public class LogoGetter {
         }
     }
 
-    static void fixRelative(ArrayList<String> logos, ArrayList<String> icons, String url){
-        for(String logo : logos){
-            if(logo.startsWith("/")){
+    static void fixRelative(ArrayList<String> logos, ArrayList<String> icons, String url) {
+        for (String logo : logos) {
+            if (logo.startsWith("/")) {
                 logo = url.concat(logo);
             }
         }
-        for(String icon : icons){
-            if(icon.startsWith("/")){
+        for (String icon : icons) {
+            if (icon.startsWith("/")) {
                 icon = url.concat(icon);
             }
         }
+    }
 
     public static CompanyInfo parse(String url, CompanyInfo info){
         try {
@@ -55,8 +56,8 @@ public class LogoGetter {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0")
                     .timeout(30000)
                     .get();
-            getLogoElementFromLinkTag(document, info.getLogos(), info.getIcons(), url);
-            getLogoElementFromImgTag(document, info.getLogos(), info.getIcons(), url);
+            getLogoElementFromLinkTag(document, info.getLogos(), info.getIcons());
+            getLogoElementFromImgTag(document, info.getLogos(), info.getIcons());
             fixRelative(info.getLogos(), info.getIcons(), url);
 
         }catch (Exception e){

@@ -4,13 +4,15 @@ import lombok.SneakyThrows;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
 public class BrandReader {
     @SneakyThrows
-    public static void BrandFetchGetter(String my_url, CompanyInfo info){
+    public static void BrandFetchGetter(String my_url, CompanyInfo info) {
         String API_KEY = "Bearer NpMXuaEYgwNGyJPMNaEIiEc8PBPQLy9fCQE68lAj08k=";
 //        String query = URLEncoder.encode("SELECT NAME FROM COMPANY WHERE WEBSITE='"+my_url+"'", String.valueOf(StandardCharsets.UTF_8));
 //        URL url = new URL("https://api.brandfetch.io/v2/brands/" + query);

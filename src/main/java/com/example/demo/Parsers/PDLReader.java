@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -24,58 +25,58 @@ public class PDLReader {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("X-Api-Key", API_KEY);
         connection.connect();
-        String text = new Scanner(connection.getInputStream()).useDelimiter("\\Z").next();
-        JSONObject jsonObject = new JSONObject(text);
-        System.out.println(jsonObject);
         try {
-            int emp_count = jsonObject.getJSONArray("data").getJSONObject(0).getInt("employee_count");
-            if(Objects.equals(info.getEmployees(), 0))
-                info.setEmployees(emp_count);
-        }
-        catch (JSONException e){
-            System.out.println("PDL No emp_count data!");
-        }
-        try {
-            String f_url = jsonObject.getJSONArray("data").getJSONObject(0).getString("facebook_url");
-            if(Objects.equals(info.getTwitter(), ""))
-                info.setFacebook(f_url);
-        }
-        catch (JSONException e){
-            System.out.println("PDL No twitter data!");
-        }
-        try {
-            String t_url = jsonObject.getJSONArray("data").getJSONObject(0).getString("twitter_url");
-            if(Objects.equals(info.getTwitter(), ""))
-                info.setTwitter(t_url);
-        }
-        catch (JSONException e){
-            System.out.println("PDL No facebook data!");
-        }
-        try {
-            String name = jsonObject.getJSONArray("data").getJSONObject(0).getString("name");
-            if(Objects.equals(info.getName(), ""))
-                info.setName(name);
-        }
-        catch (JSONException e){
-            System.out.println("PDL No name data!");
-        }
-        try {
-            JSONObject pre = jsonObject.getJSONArray("data").getJSONObject(0).getJSONObject("location");
-            String addr = "";
-            Iterator<String> keys = pre.keys();
-
-            while(keys.hasNext()) {
-                String key = keys.next();
-                if (pre.get(key) instanceof String) {
-                    addr += key + ":" + pre.get(key) + ", ";
-                    System.out.println(pre.get(key));
-                }
+            String text = new Scanner(connection.getInputStream()).useDelimiter("\\Z").next();
+            JSONObject jsonObject = new JSONObject(text);
+            System.out.println(jsonObject);
+            try {
+                int emp_count = jsonObject.getJSONArray("data").getJSONObject(0).getInt("employee_count");
+                if (Objects.equals(info.getEmployees(), 0))
+                    info.setEmployees(emp_count);
+            } catch (JSONException e) {
+                System.out.println("PDL No emp_count data!");
             }
-            if(Objects.equals(info.getAddress(), ""))
-                info.setAddress(addr);
+            try {
+                String f_url = jsonObject.getJSONArray("data").getJSONObject(0).getString("facebook_url");
+                if (Objects.equals(info.getTwitter(), ""))
+                    info.setFacebook(f_url);
+            } catch (JSONException e) {
+                System.out.println("PDL No twitter data!");
+            }
+            try {
+                String t_url = jsonObject.getJSONArray("data").getJSONObject(0).getString("twitter_url");
+                if (Objects.equals(info.getTwitter(), ""))
+                    info.setTwitter(t_url);
+            } catch (JSONException e) {
+                System.out.println("PDL No facebook data!");
+            }
+            try {
+                String name = jsonObject.getJSONArray("data").getJSONObject(0).getString("name");
+                if (Objects.equals(info.getName(), ""))
+                    info.setName(name);
+            } catch (JSONException e) {
+                System.out.println("PDL No name data!");
+            }
+            try {
+                JSONObject pre = jsonObject.getJSONArray("data").getJSONObject(0).getJSONObject("location");
+                String addr = "";
+                Iterator<String> keys = pre.keys();
+
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    if (pre.get(key) instanceof String) {
+                        addr += key + ":" + pre.get(key) + ", ";
+                        System.out.println(pre.get(key));
+                    }
+                }
+                if (Objects.equals(info.getAddress(), ""))
+                    info.setAddress(addr);
+            } catch (JSONException e) {
+                System.out.println("PDL No location data!");
+            }
         }
-        catch (JSONException e){
-            System.out.println("PDL No location data!");
+        catch (FileNotFoundException e){
+            System.out.println("No PDL data!");
         }
     }
     public static void main(String[] args) {
